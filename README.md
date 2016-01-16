@@ -1,6 +1,18 @@
 # Projet Géo-Alerte - backoffice
 
-Backoffice proposer une API pour :
-Que des autorités poussent des évennement géolocalisés
-Que de l'internet puisse récupérer ces informations en fonction de la localisation
+##Une API
+
+C'est un backoffice qui propose une API permettant de 
+- Pousser les évennement géolocalisés (autorités certifées)
+- Consommer les données (sites, applis mobiles, administrations...)
+
+##Technique
+
+- OS : Unbuntu 15.10
+- Langage : PHP
+- BDD : PostgreSQL/PostGIS
+- API : rest/json
+
+
+
 
