@@ -27,7 +27,7 @@
     <body>
         <h1>Slim</h1>
         <div>a microframework for PHP</div>
-
+        <?php print_r($db); ?>
         <?php if (isset($name)) : ?>
             <h2>Hello <?= htmlspecialchars($name); ?>!</h2>
         <?php else: ?>
