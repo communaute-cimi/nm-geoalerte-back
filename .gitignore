@@ -1,0 +1,20 @@
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# Eclipse Core
+.project
+
+# MAC OS X
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
