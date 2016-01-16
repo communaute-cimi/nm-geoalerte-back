@@ -1,0 +1,203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "Geo Alerte"
+    },
+    "paths": {
+        "/alertes": {
+            "get": {
+                "description": "Gets `Alert` objects.\n",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "ArrayOfAlerts",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Alert"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates an `Alert` object.\n",
+                "parameters": [
+                    {
+                        "name": "issuer",
+                        "in": "query",
+                        "description": "Specifies the issuing authority",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "Specifies the short message associated with the alert",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "long_message",
+                        "in": "query",
+                        "description": "Specifies the long message associated with the alert",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Specifies the alert category",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "Specifies a URL for extended information",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "geom",
+                        "in": "body",
+                        "description": "The body of the request specifies the area",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "Id",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/alertes/findByPoint": {
+            "get": {
+                "description": "Finds `Alert` objects relevant to users at one static location.\n",
+                "parameters": [
+                    {
+                        "name": "context",
+                        "in": "query",
+                        "description": "Specifies a context, typically the requesting application",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "Specifies (the latitude of) the relevant location",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lon",
+                        "in": "query",
+                        "description": "Specifies (the longitude of) the relevant location",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "ArrayOfAlerts",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Alert"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/alertes/findByPath": {
+            "get": {
+                "description": "Finds `Alert` objects relevant to moving from `start` to `destination`.\n",
+                "parameters": [
+                    {
+                        "name": "context",
+                        "in": "query",
+                        "description": "Specifies a context, typically the requesting application",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_lat",
+                        "in": "query",
+                        "description": "Specifies (the latitude of) the starting point of an intended move",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start_lon",
+                        "in": "query",
+                        "description": "Specifies (the longitude of) the starting point of an intended move",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "dest_lat",
+                        "in": "query",
+                        "description": "Specifies (the latitude of) the destination of an intended move",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "dest_lon",
+                        "in": "query",
+                        "description": "Specifies (the longitude of) the destination of an intended move",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "ArrayOfAlerts",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Alert"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Alert": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "long_message": {
+                    "type": "string"
+                },
+                "area": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
