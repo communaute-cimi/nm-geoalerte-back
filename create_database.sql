@@ -2,7 +2,7 @@
 -- DROP TABLE alert;
 -- Supprimer et créer la table
 
-DROP TABLE alert IF EXISTS;
+DROP TABLE IF EXISTS alert;
 
 CREATE TABLE alert
 (
