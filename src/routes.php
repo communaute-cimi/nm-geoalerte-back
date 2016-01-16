@@ -2,8 +2,6 @@
 // Routes
 
 $app->get('/[{name}]', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
 
     $dsn = 'pgsql:host=localhost;dbname=postgres';
     $usr = 'postgres';
@@ -17,6 +15,9 @@ $app->get('/[{name}]', function ($request, $response, $args) {
     $stmt = $selectStatement->execute();
     $data = $stmt->fetch();
 
-    // Render index view
-    return $this->renderer->render($response, 'index.phtml', ['args' => $args, 'db' => $data]);
+    return $response
+      ->withHeader('Content-type', 'application/json')
+      ->withStatus(200)
+      ->write(json_encode($data))
+    ;
 });
