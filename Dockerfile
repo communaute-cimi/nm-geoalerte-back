@@ -4,6 +4,8 @@ RUN apt-get install -y php5
 RUN apt-get install -y postgresql-9.4
 RUN apt-get install -y postgis
 RUN apt-get install -y php5-pgsql
+RUN apt-get install -y vim
+
 # Setup DB
 RUN service postgresql start && su postgres -c "psql -c \"CREATE EXTENSION postgis\""
 RUN service postgresql start && su postgres -c "psql -c \"ALTER USER Postgres WITH PASSWORD 'necmergitur'\""

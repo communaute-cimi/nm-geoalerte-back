@@ -1,7 +1,3 @@
-﻿-- Créer une extension postgis
--- DROP TABLE alert;
--- Supprimer et créer la table
-
 DROP TABLE IF EXISTS alert ;
 
 CREATE TABLE alert
@@ -19,8 +15,6 @@ CREATE TABLE alert
 WITH (
   OIDS=FALSE
 );
-
--- Insérer un polygon (17eme arrondissement)
 
 INSERT INTO alert (
 	message, long_message, url, category, emetteur, dthr, geom)
