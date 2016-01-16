@@ -5,7 +5,17 @@
  * Get all alerts
  */
 $app->get('/v1/alerts', function ($request, $response, $args) {
-  $stmt = $this->database->query("SELECT emetteur, dthr, message, long_message, category, url, ST_AsGeoJSON(geom) as geom FROM alert");
+  $stmt = $this->database->query("
+    SELECT
+      emetteur,
+      dthr,
+      message,
+      long_message,
+      category,
+      url,
+      ST_AsGeoJSON(geom) as geom
+    FROM alert
+  ");
   $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
 
   if(!$alerts) {
@@ -25,15 +35,25 @@ $app->get('/v1/alerts/{lat}/{lng}', function ($request, $response, $args) {
 
   $lat = $args['lat'];
   $lng = $args['lng'];
+  $buffer = 4000;
 
   $stmt = $this->database->query("
     WITH buffer AS (
-      SELECT ST_Buffer(ST_MakePoint(2.30238, 48.88679)::geography, 4000) AS geom
+      SELECT ST_Buffer(ST_MakePoint($lat, $lng)::geography, $buffer) AS geom
     )
-    SELECT emetteur, dthr, message, long_message, category, url, ST_AsGeoJSON(alert.geom) FROM buffer
+    SELECT
+      emetteur,
+      dthr,
+      message,
+      long_message,
+      category,
+      url,
+      ST_AsGeoJSON(alert.geom)
+    FROM buffer
     INNER JOIN alert ON (ST_intersects(buffer.geom, alert.geom))
   ");
   $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
+
 
   if(!$alerts) {
    $alerts = [];
