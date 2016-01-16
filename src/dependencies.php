@@ -21,5 +21,15 @@ $container['logger'] = function ($c) {
 // database
 $container['database'] = function ($c) {
     $settings = $c->get('settings')['database'];
-    return new \Slim\PDO\Database($settings['dsn'], $settings['usr'], $settings['pwd']);
+    $d = new \Slim\PDO\Database($settings['dsn'], $settings['usr'], $settings['pwd']);
+    $d->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $d;
+};
+
+$container['errorHandler'] = function ($c) {
+    return function ($request, $response, $exception) use ($c) {
+        return $c['response']->withStatus(500)
+                             ->withHeader('Content-Type', 'text/html')
+                             ->write($exception);
+    };
 };

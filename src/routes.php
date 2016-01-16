@@ -11,8 +11,11 @@ $app->get('/alerts', function ($request, $response, $args) {
       ->execute()
     ;
 
-    $alerts = $select->fetch();
+    $alerts = $select->fetchAll();
 
+    if(!$alerts) {
+      $alerts = [];
+    }
     return $response
       ->withHeader('Content-type', 'application/json')
       ->withStatus(200)
@@ -25,36 +28,45 @@ $app->get('/alerts', function ($request, $response, $args) {
  * Create an alert
  */
 $app->post('/alerts', function ($request, $response, $args) {
-  $message = $args['message'];
-  $longMessage = $args['long_message'];
-  $category = $args['category'];
-  $url = $args['url'];
-  $geom = $args['geom'];
 
+  $vars = $request->getParsedBody();
+
+  $message = isset($vars['message']) ? $vars['message'] : "";
+  $longMessage = isset($vars['long_message']) ? $vars['long_message'] : "";
+  $category = isset($vars['category']) ? $vars['category'] : "";
+  $url = isset($vars['url']) ? $vars['url'] : "";
+  $geom = isset($vars['geom']) ? $vars['geom'] : NULL;
+
+  /* // Ne fonctionne pas ...
   $id = $this->database
     ->insert(array(
       'message',
-      'short_message',
       'long_message',
-      'short_message',
       'category',
       'url',
       'geom'
     ))
     ->into('alert')
-    ->values(
+    ->values(array(
       $message,
       $longMessage,
       $category,
       $url,
-      $geom
-    )
-  ->execute();
+      NULL
+    ))
+    ->execute();*/
+  $stmt = $this->database->prepare("INSERT INTO alert (id, message, long_message, category, url, geom) VALUES (DEFAULT, :message, :long_message, :category, :url, :geom)");
+  $stmt->bindParam(':message', $message);
+  $stmt->bindParam(':long_message', $longMessage);
+  $stmt->bindParam(':category', $category);
+  $stmt->bindParam(':url', $url);
+  $stmt->bindParam(':geom', $geom);
+  $stmt->execute();
 
   return $response
     ->withHeader('Content-type', 'application/json')
     ->withStatus(200)
-    ->write(json_encode($id))
+    ->write(json_encode([$vars, $stmt]))
   ;
 });
 
