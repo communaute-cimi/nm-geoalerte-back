@@ -17,3 +17,9 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], Monolog\Logger::DEBUG));
     return $logger;
 };
+
+// database
+$container['database'] = function ($c) {
+    $settings = $c->get('settings')['database'];
+    return new \Slim\PDO\Database($settings['dsn'], $settings['usr'], $settings['pwd']);
+};
