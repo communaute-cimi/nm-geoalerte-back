@@ -14,7 +14,6 @@ CREATE TABLE alert
   emetteur character varying,
   dthr timestamp without time zone,
   geom geometry(Polygon,4326),
-  
   CONSTRAINT pk_alert PRIMARY KEY (id)
 )
 WITH (
