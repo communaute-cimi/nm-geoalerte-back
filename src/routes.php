@@ -4,7 +4,7 @@
 /**
  * Get all alerts
  */
-$app->get('/alerts/get', function ($request, $response, $args) {
+$app->get('/alerts', function ($request, $response, $args) {
     $statement = $this->database
       ->select()
       ->from('alert')
