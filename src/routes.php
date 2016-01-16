@@ -8,7 +8,6 @@ $app->get('/alerts', function ($request, $response, $args) {
     $stmt = $this->database->query("SELECT message, long_message, category, url, ST_AsGeoJSON(geom) as geom FROM alert");
     $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-    //ST_AsGeoJSON
     if(!$alerts) {
       $alerts = [];
     }
@@ -24,26 +23,26 @@ $app->get('/alerts', function ($request, $response, $args) {
  * Create an alert
  */
 $app->post('/alerts', function ($request, $response, $args) {
-  $vars = $request->getParsedBody();
+  $vars = json_decode($request->getBody(), false);
 
-  $message = isset($vars['message']) ? $vars['message'] : "";
-  $longMessage = isset($vars['long_message']) ? $vars['long_message'] : "";
-  $category = isset($vars['category']) ? $vars['category'] : "";
-  $url = isset($vars['url']) ? $vars['url'] : "";
-  $geom = isset($vars['geom']) ? $vars['geom'] : NULL;
+  $message = isset($vars->properties->message) ? $vars->properties->message : "";
+  $longMessage = isset($vars->properties->long_message) ? $vars->properties->long_message : "";
+  $category = isset($vars->properties->category) ? $vars->properties->category : "";
+  $url = isset($vars->properties->url) ? $vars->properties->url : "";
+  $geom = isset($vars->geometry) ? json_encode($vars->geometry) : NULL;
 
-  $stmt = $this->database->prepare("INSERT INTO alert (id, message, long_message, category, url, geom) VALUES (DEFAULT, :message, :long_message, :category, :url, :geom)");
+  $stmt = $this->database->prepare("INSERT INTO alert(message, long_message, category, url, geom) VALUES (:message, :long_message, :category, :url, ST_SetSRID(ST_GeomFromGeoJSON(:geom), 4326))");
   $stmt->bindParam(':message', $message);
   $stmt->bindParam(':long_message', $longMessage);
   $stmt->bindParam(':category', $category);
   $stmt->bindParam(':url', $url);
   $stmt->bindParam(':geom', $geom);
-  $stmt->execute();
+  $r = $stmt->execute();
 
   return $response
     ->withHeader('Content-type', 'application/json')
     ->withStatus(200)
-    ->write(json_encode([$vars, $stmt]))
+    ->write(json_encode($r))
   ;
 });
 
