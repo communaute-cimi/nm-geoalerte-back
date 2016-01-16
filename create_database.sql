@@ -2,7 +2,7 @@
 -- DROP TABLE alert;
 -- Supprimer et créer la table
 
-DROP TABLE IF EXISTS alert ;
+DROP TABLE IF EXISTS alert;
 
 CREATE TABLE alert
 (
@@ -12,7 +12,7 @@ CREATE TABLE alert
   url character varying,
   category character varying,
   emetteur character varying,
-  dthr timestamp without time zone,
+  dthr timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
   geom geometry(Polygon,4326),
   CONSTRAINT pk_alert PRIMARY KEY (id)
 )
@@ -27,7 +27,7 @@ INSERT INTO alert (
     VALUES (
 	'test',
 	'Alerte long',
-	'www.prefpolice.fr', 
+	'www.prefpolice.fr',
 	'danger',
 	'Préfecture de Police',
 	now(),

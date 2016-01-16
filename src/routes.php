@@ -4,38 +4,85 @@
 /**
  * Get all alerts
  */
-$app->get('/alerts', function ($request, $response, $args) {
-    $stmt = $this->database->query("SELECT message, long_message, category, url, ST_AsGeoJSON(geom) as geom FROM alert");
-    $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
+$app->get('/v1/alerts', function ($request, $response, $args) {
+  $stmt = $this->database->query("SELECT emetteur, dthr, message, long_message, category, url, ST_AsGeoJSON(geom) as geom FROM alert");
+  $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-    if(!$alerts) {
-      $alerts = [];
-    }
-    return $response
-      ->withHeader('Content-type', 'application/json')
-      ->withStatus(200)
-      ->write(json_encode($alerts))
-    ;
+  if(!$alerts) {
+    $alerts = [];
+  }
+  return $response
+    ->withHeader('Content-type', 'application/json')
+    ->withStatus(200)
+    ->write(json_encode($alerts))
+  ;
 });
 
+/**
+ * Get alerts from a location
+ */
+$app->get('/v1/alerts/{lat}/{lng}', function ($request, $response, $args) {
+
+  $lat = $args['lat'];
+  $lng = $args['lng'];
+
+  $stmt = $this->database->query("
+    WITH buffer AS (
+      SELECT ST_Buffer(ST_MakePoint(2.30238, 48.88679)::geography, 4000) AS geom
+    )
+    SELECT emetteur, dthr, message, long_message, category, url, ST_AsGeoJSON(alert.geom) FROM buffer
+    INNER JOIN alert ON (ST_intersects(buffer.geom, alert.geom))
+  ");
+  $alerts = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+  if(!$alerts) {
+   $alerts = [];
+  }
+  return $response
+   ->withHeader('Content-type', 'application/json')
+   ->withStatus(200)
+   ->write(json_encode($alerts))
+  ;
+ });
 
 /**
  * Create an alert
  */
-$app->post('/alerts', function ($request, $response, $args) {
+$app->post('/v1/alerts', function ($request, $response, $args) {
+  // Parsing JSON input
   $vars = json_decode($request->getBody(), false);
 
   $message = isset($vars->properties->message) ? $vars->properties->message : "";
   $longMessage = isset($vars->properties->long_message) ? $vars->properties->long_message : "";
   $category = isset($vars->properties->category) ? $vars->properties->category : "";
   $url = isset($vars->properties->url) ? $vars->properties->url : "";
+  // Encode geometry to store in database
+  $source = isset($vars->properties->source) ? $vars->properties->source : "";
+
   $geom = isset($vars->geometry) ? json_encode($vars->geometry) : NULL;
 
-  $stmt = $this->database->prepare("INSERT INTO alert(message, long_message, category, url, geom) VALUES (:message, :long_message, :category, :url, ST_SetSRID(ST_GeomFromGeoJSON(:geom), 4326))");
+  $stmt = $this->database->prepare("
+    INSERT INTO alert(
+      message,
+      long_message,
+      category,
+      url,
+      emetteur,
+      geom
+    ) VALUES (
+      :message,
+      :long_message,
+      :category,
+      :url,
+      :emetteur,
+      ST_SetSRID(ST_GeomFromGeoJSON(:geom), 4326)
+    )
+  ");
   $stmt->bindParam(':message', $message);
   $stmt->bindParam(':long_message', $longMessage);
   $stmt->bindParam(':category', $category);
   $stmt->bindParam(':url', $url);
+  $stmt->bindParam(':emetteur', $source);
   $stmt->bindParam(':geom', $geom);
   $r = $stmt->execute();
 
@@ -45,51 +92,3 @@ $app->post('/alerts', function ($request, $response, $args) {
     ->write(json_encode($r))
   ;
 });
-
-/**
- * Retrieve alerts from a point
- */
-/*$app->get('/alerts/findByPoint', function ($request, $response, $args) {
-    $lat = $args['lat'];
-    $lon = $args['lon'];
-
-    // TODO UPDATE QUERY TO FILTER WITH LAT & LON
-    $statement = $this->database
-      ->select()
-      ->from('alert')
-      ->execute()
-    ;
-
-    $data = $statement->fetch();
-
-    return $response
-      ->withHeader('Content-type', 'application/json')
-      ->withStatus(200)
-      ->write(json_encode($data))
-    ;
-});*/
-
-/**
- * Retrieve alerts from a path
- */
-/*$app->get('/alerts/findByPath', function ($request, $response, $args) {
-    $start_lat = $args['start_lat'];
-    $start_lon = $args['start_lon'];
-    $dest_lat = $args['dest_lat'];
-    $dest_lon = $args['dest_lon'];
-
-    // TODO UPDATE QUERY TO FILTER WITH PATH COORDINATES
-    $statement = $this->database
-      ->select()
-      ->from('alert')
-      ->execute()
-    ;
-
-    $data = $statement->fetch();
-
-    return $response
-      ->withHeader('Content-type', 'application/json')
-      ->withStatus(200)
-      ->write(json_encode($data))
-    ;
-});*/
