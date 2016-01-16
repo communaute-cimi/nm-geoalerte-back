@@ -2,7 +2,7 @@
 return [
     'settings' => [
         'displayErrorDetails' => true,
-        'debug' => true,
+
         // Renderer settings
         'renderer' => [
             'template_path' => __DIR__ . '/../templates/',
