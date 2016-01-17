@@ -6,7 +6,7 @@ Le projet Géo-Alerte propose une plateforme permettant :
 - à une autorité (Préfecture, SDIS, Police, Gendarmerie...) de diffuser une alerte
 - à tout acteur internet (réseaux sociaux, opérateurs, institutions...) de savoir si une localisation est concernée et d'en connaître l'emprise.
 
-Les "clients" concernés : 
+Les "clients" concernés :
 - Les services de l'Etat
 - Les opérateurs mobiles
 - Les réseaux sociaux
@@ -21,7 +21,7 @@ Une alerte est consituée :
 
 ##L'API
 
-C'est un backoffice qui propose une API permettant de 
+C'est un backoffice qui propose une API permettant de
 - Pousser les évennement géolocalisés (autorités certifées)
 - Consommer les données (sites, applis mobiles, administrations...)
 
@@ -37,7 +37,7 @@ cd nm-geoalerte-back
 docker build --rm -t geoalerte .
 
 # Commande : bind port, lancement PG et Apache
-docker run -p 8000:8000 -d geoalert /bin/bash -c "service postgresql start && apache2ctl -X"
+docker run -p 8000:8000 -d geoalerte /bin/bash -c "service postgresql start && apache2ctl -X"
 
 # accéder à la VM (container_id = 3 premiers caractères de l'ID)
 docker exec -it ${container_id} /bin/bash
@@ -50,9 +50,3 @@ docker exec -it ${container_id} /bin/bash
 - Langage : PHP + framework slim (pour l'API)
 - BDD : PostgreSQL/PostGIS
 - API : rest/json
-
-
-
-
-
-
