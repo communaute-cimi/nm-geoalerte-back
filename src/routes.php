@@ -76,9 +76,8 @@ $app->post('/v1/alerts', function ($request, $response, $args) {
   $longMessage = isset($vars->properties->long_message) ? $vars->properties->long_message : "";
   $category = isset($vars->properties->category) ? $vars->properties->category : "";
   $url = isset($vars->properties->url) ? $vars->properties->url : "";
-  // Encode geometry to store in database
   $source = isset($vars->properties->source) ? $vars->properties->source : "";
-
+  // Encode geometry to store in database
   $geom = isset($vars->geometry) ? json_encode($vars->geometry) : NULL;
 
   $stmt = $this->database->prepare("
@@ -110,5 +109,25 @@ $app->post('/v1/alerts', function ($request, $response, $args) {
     ->withHeader('Content-type', 'application/json')
     ->withStatus(200)
     ->write(json_encode($r))
+  ;
+});
+
+/**
+ * Remove an alert by id
+ */
+$app->delete('/v1/alerts/{id}', function ($request, $response, $args) {
+  $id = $args['id'];
+
+  $stmt = $this->database->prepare("
+    DELETE FROM alert
+    WHERE id=:id
+  ");
+  $stmt->bindParam(':id', $id);
+  $r = $stmt->execute();
+
+  return $response
+    ->withHeader('Content-type', 'application/json')
+    ->withStatus(200)
+    ->write(json_encode($stmt->rowCount() > 0))
   ;
 });
