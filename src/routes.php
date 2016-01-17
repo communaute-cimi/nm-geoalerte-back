@@ -48,7 +48,7 @@ $app->get('/v1/alerts/{lat}/{lng}', function ($request, $response, $args) {
       long_message,
       category,
       url,
-      ST_AsGeoJSON(alert.geom)
+      ST_AsGeoJSON(alert.geom) as geom
     FROM buffer
     INNER JOIN alert ON (ST_intersects(buffer.geom, alert.geom))
   ");
