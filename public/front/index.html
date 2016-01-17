@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>GEO-ALERTE</title>
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- Custom styles for this template -->
+    <!-- <link href="starter-template.css" rel="stylesheet"> -->
+    <!-- <script src="http://openlayers.org/en/v3.12.1/build/ol-debug.js" type="text/javascript"></script> -->
+    <script src="./api/vendor/openLayers/3.12.1/ol-debug.js" type="text/javascript"></script>
+    <!-- <link rel="stylesheet" href="http://openlayers.org/en/v3.12.1/css/ol.css" type="text/css"> -->
+    <link rel="stylesheet" href="./api/vendor/openLayers/3.12.1/ol.css" type="text/css">
+    <script src="./api/vendor/proj4js/2.3.3/proj4-src.js"</script>
+    <script src="./api/vendor/require/require.js" type="text/javascript"></script>
+    
+    <style>
+    .map {
+    padding-top: 50px;
+    height: 100%;
+    width: 100%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand">GEO-ALERTE</a>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ajouter <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" id="polygonTool">Zone Alerte</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Modifier <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" id="polygonModifyTool">Zone Alerte</a></li>
+                </ul>
+              </li>
+            </ul>
+            </div><!-- /.navbar-collapse -->
+          </div>
+        </nav>
+      </div>
+      <div class="navbar-offset"></div>
+      <div id="map">
+        
+        <div class="row main-row sidebar hidden" id="panelProperties">
+          <div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Saisie d'une alerte</h3>
+              </div>
+              <div class="panel-body">
+                <form role="form">
+                  <div class="form-group">
+                    <label for="sel1">Catégorie:</label>
+                    <select class="form-control" id="categoryTxt">
+                      <option>Alerte rouge</option>
+                      <option>Alerte orange</option>
+                      <option>Alerte jaune</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Messsage court:</label>
+                    <input type="text" class="form-control" id="msgShortTxt">
+                  </div>
+                  <div class="form-group">
+                    <label>Messsage long:</label>
+                    <input type="text" class="form-control" id="msgLongTxt">
+                  </div>
+                  <div class="form-group">
+                    <label>Source:</label>
+                    <input type="text" class="form-control" id="sourceTxt">
+                  </div>
+                  <div class="form-group">
+                    <label>URL:</label>
+                    <input type="url" class="form-control" id="urlTxt">
+                  </div>
+                  
+                  <button type="submit" id="saveBtn" class="btn btn-default">Sauvegarder</button>
+                  <button id="cancelBtn" class="btn btn-danger">Annuler</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+
+        <script src="./api/vendor/jquery/1.11.3/jquery.min.js"></script>
+        <!-- <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script> -->
+        <!-- <script src="../../dist/js/bootstrap.min.js"></script> -->
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="./api/vendor/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="./api/vendor/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        <!-- Latest compiled and minified JavaScript -->
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
+        <script src="./api/vendor/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="./js/script.js"></script>
+        <link rel="stylesheet" href="./css/style.css">
+      </body>
+    </html>
