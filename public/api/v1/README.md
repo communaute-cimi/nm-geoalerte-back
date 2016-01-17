@@ -19,17 +19,17 @@ Requêtes accessibles à tous
 
 GET /v1/alerts
 
-  RETURN Array<Alert> La liste des alertes en cours sur tout le territoire
+*  RETURN Array<Alert> La liste des alertes en cours sur tout le territoire
 
 ### Récupérer les alertes concernant l'utilisateur
 
 GET /v1/alerts/{lat}/{lng}
 
-  PARAM float lat     La latitude GPS de l'utilisateur
+*  PARAM float lat     La latitude GPS de l'utilisateur
 
-  PARAM float lng     La longitude GPS de l'utilisateur
+*  PARAM float lng     La longitude GPS de l'utilisateur
 
-  RETURN Array<Alert> La liste des alertes en cours qui concerne l'utilisateur
+*  RETURN Array<Alert> La liste des alertes en cours qui concerne l'utilisateur
 
 Requêtes accessibles aux autorités
 ---
@@ -38,24 +38,24 @@ Requêtes accessibles aux autorités
 
 INSERT /v1/alert
 
-  POST Alert          Un objet GeoJSON de l'alerte
+*  POST Alert          Un objet GeoJSON de l'alerte
 
-  RETURN int          L'id de l'alerte insérée
+*  RETURN int          L'id de l'alerte insérée
 
 ### Modifier une alerte
 
 PUT /v1/alerts/{id}
 
-  PARAM int id        L'id de l'alerte à modifier
+*  PARAM int id        L'id de l'alerte à modifier
 
-  POST Alert          Un objet GeoJSON de l'alerte contenant les champs à modifier
+*  POST Alert          Un objet GeoJSON de l'alerte contenant les champs à modifier
 
-  RETURN bool         Le résultat de la requête de modification
+*  RETURN bool         Le résultat de la requête de modification
 
 ### Supprimer une alerte
 
 DELETE /v1/alerts/{id}
 
-  PARAM int id        L'id de l'alerte à supprimer
+*  PARAM int id        L'id de l'alerte à supprimer
 
-  RETURN bool         Le résultat de la requête de suppression
+*  RETURN bool         Le résultat de la requête de suppression
