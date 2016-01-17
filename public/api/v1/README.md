@@ -18,7 +18,7 @@ Requêtes accessibles à tous
 
 ### Lister toutes les alertes en cours
 
-**GET /v1/alerts*
+GET /v1/alerts
 
 *  RETURN Array<Alert> La liste des alertes en cours sur tout le territoire
 
@@ -37,7 +37,7 @@ Requêtes accessibles aux autorités
 
 ### Ajouter une alerte
 
-**INSERT /v1/alert**
+INSERT /v1/alert
 
 *  **PARAM[POST] Alert**          Un objet GeoJSON de l'alerte
 
@@ -45,7 +45,7 @@ Requêtes accessibles aux autorités
 
 ### Modifier une alerte
 
-**PUT /v1/alerts/{id}**
+PUT /v1/alerts/{id}
 
 *  **PARAM[GET] int id**        L'id de l'alerte à modifier
 
@@ -55,7 +55,7 @@ Requêtes accessibles aux autorités
 
 ### Supprimer une alerte
 
-**DELETE /v1/alerts/{id}**
+DELETE /v1/alerts/{id}
 
 *  **PARAM[GET] int id**        L'id de l'alerte à supprimer
 
