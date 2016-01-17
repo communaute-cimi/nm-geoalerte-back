@@ -15,9 +15,13 @@ Objet Alert
 Requêtes accessibles à tous
 ---
 
+### Lister toutes les alertes en cours
+
 GET /v1/alerts
 
   RETURN Array<Alert> La liste des alertes en cours sur tout le territoire
+
+### Récupérer les alertes concernant l'utilisateur
 
 GET /v1/alerts/{lat}/{lng}
 
@@ -30,11 +34,15 @@ GET /v1/alerts/{lat}/{lng}
 Requêtes accessibles aux autorités
 ---
 
+### Ajouter une alerte
+
 INSERT /v1/alert
 
   POST Alert          Un objet GeoJSON de l'alerte
 
   RETURN int          L'id de l'alerte insérée
+
+### Modifier une alerte
 
 PUT /v1/alerts/{id}
 
@@ -43,6 +51,8 @@ PUT /v1/alerts/{id}
   POST Alert          Un objet GeoJSON de l'alerte contenant les champs à modifier
 
   RETURN bool         Le résultat de la requête de modification
+
+### Supprimer une alerte
 
 DELETE /v1/alerts/{id}
 
