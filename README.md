@@ -1,11 +1,16 @@
 # Projet Géo-Alerte - backoffice
 
-## Présentation
+## Présentation du projet
 
 Le projet Géo-Alerte propose une plateforme permettant :
 - à une autorité (Préfecture, SDIS, Police, Gendarmerie...) de diffuser une alerte
-- à tout acteur sur internet de savoir si une localisation est concernée par une alerte et si oui de connaître son emprise.
+- à tout acteur internet (réseaux sociaux, opérateurs, institutions...) de savoir si une localisation est concernée et d'en connaître l'emprise.
 
+Les "clients" concernés : 
+- Les services de l'Etat
+- Les opérateurs mobiles
+- Les réseaux sociaux
+- Les développeurs d'application mobiles ou de sites internet
 
 Une alerte est consituée :
 - d'un émetteur
