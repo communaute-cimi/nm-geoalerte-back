@@ -68,7 +68,6 @@ loadLayer();
 
 
 //Configuration de l'outil de saisie
-var pointTool = document.getElementById('pointTool');
 var polygonTool = document.getElementById('polygonTool');
 var polygonModifyTool = document.getElementById('polygonModifyTool');
 var cancelButton = document.getElementById('cancelBtn');
@@ -246,15 +245,6 @@ function addModifyInteraction() {
     console.log(data);
     $('#panelProperties').addClass('hidden');
     refreshLayer();
-  };
-
-  /**
-   * Activation de l'outil ponctuel
-   * @param {Event} e Change event.
-   */
-  pointTool.onclick = function(e) {
-    map.removeInteraction(draw);
-    addDrawInteraction('Point');
   };
 
   /**

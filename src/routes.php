@@ -131,3 +131,40 @@ $app->delete('/v1/alerts/{id}', function ($request, $response, $args) {
     ->write(json_encode($stmt->rowCount() > 0))
   ;
 });
+
+/**
+ * Update an alert by id
+ */
+$app->put('/v1/alerts/{id}', function ($request, $response, $args) {
+  $id = $args['id'];
+  $vars = json_decode($request->getBody(), false);
+
+  $count = 0;
+  $sql = "UPDATE alert SET ";
+  // Parsing JSON input
+  if(isset($vars->properties->message) && $count += 1) $sql .= "message='" . $vars->properties->message . "',";
+  if(isset($vars->properties->long_message) && $count += 1) $sql .= "long_message='" . $vars->properties->long_message . "',";
+  if(isset($vars->properties->category) && $count += 1) $sql .= "category='" . $vars->properties->category . "',";
+  if(isset($vars->properties->url) && $count += 1) $sql .= "url='" . $vars->properties->url . "',";
+  if(isset($vars->properties->source) && $count += 1) $sql .= "emetteur='" . $vars->properties->source . "',";
+  // Encode geometry to store in database
+  if(isset($vars->geometry) && $count += 1) $sql .= "geom=ST_SetSRID(ST_GeomFromGeoJSON('" . json_encode($vars->geometry) . "'), 4326),"; // "geom='" . json_encode($vars->geometry)
+
+  if($count) {
+    $sql = substr($sql, 0, -1);
+    $sql .= " WHERE id=:id";
+    $stmt = $this->database->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $r = $stmt->rowCount() > 0;
+  } else {
+    $r = false;
+  }
+
+
+  return $response
+    ->withHeader('Content-type', 'application/json')
+    ->withStatus(200)
+    ->write(json_encode($r))
+  ;
+});
