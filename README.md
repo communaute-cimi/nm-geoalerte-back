@@ -22,7 +22,7 @@ Une alerte est consituée :
 ##L'API
 
 C'est un backoffice qui propose une API permettant de
-- Pousser les évennement géolocalisés (autorités certifées)
+- Pousser les évènements géolocalisés (autorités certifiées)
 - Consommer les données (sites, applis mobiles, administrations...)
 
 ##Docker
