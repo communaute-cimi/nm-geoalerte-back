@@ -50,3 +50,8 @@ docker exec -it ${container_id} /bin/bash
 - Langage : PHP + framework slim (pour l'API)
 - BDD : PostgreSQL/PostGIS
 - API : rest/json
+
+##Tests
+Lister toutes les alertes : http://geoalerte.info/public/v1/alerts
+Est-ce qu'une alerte existe sur un point ? http://geoalerte.info/public/v1/alerts/2.30697/48.90464
+
