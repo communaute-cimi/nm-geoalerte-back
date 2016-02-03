@@ -35,7 +35,7 @@ $app->get('/v1/alerts/{lat}/{lng}', function ($request, $response, $args) {
 
   $lat = $args['lat'];
   $lng = $args['lng'];
-  $buffer = 4000;
+  $buffer = 200;
 
   $stmt = $this->database->query("
     WITH buffer AS (
