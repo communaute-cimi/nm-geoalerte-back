@@ -19,14 +19,26 @@ Une alerte est consituée :
 - d'une emprise géographique
 
 
-##L'API
+## L'API
 
 C'est un backoffice qui propose une API permettant de
 - Pousser les évènements géolocalisés (autorités certifiées)
 - Consommer les données (sites, applis mobiles, administrations...)
 
-##Docker
+## Docker
+
 Vous pouvez tester le projet avec docker (installation préalable nécessaire)
+
+### Quick start
+
+```shell
+docker run -d -p 8000:8000 cimi/geoalerte
+```
+
+Puis, aller sur la page http://127.0.0.1:8000
+
+### Build son image
+
 ```shell
 # Récupérer le dépôt
 git clone https://github.com/communaute-cimi/nm-geoalerte-back
@@ -41,10 +53,9 @@ docker run -p 8000:8000 -d geoalerte /bin/bash -c "service postgresql start && a
 
 # accéder à la VM (container_id = 3 premiers caractères de l'ID)
 docker exec -it ${container_id} /bin/bash
-
 ```
 
-##Pile technique
+## Pile technique
 
 - OS : Unbuntu 15.10
 - Langage : PHP + framework slim (pour l'API)
